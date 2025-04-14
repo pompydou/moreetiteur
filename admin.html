@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Administrateur - Tableau de bord</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/lucide@latest/dist/lucide.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #158454;
+            --primary-light: rgba(21, 132, 84, 0.1);
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #ffffff;
+            --bg-grey: #f5f7fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-grey);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: var(--bg-light);
+            padding: 1.5rem 1rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            margin-bottom: 2rem;
+            text-align: center;
+            padding: 0 0.5rem;
+        }
+
+        .sidebar-header h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            border-radius: var(--border-radius);
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            background-color: var(--bg-light);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .header-title p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-btn, .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .logout-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .profile-info h4 {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .profile-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .kpi-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .kpi-icon {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .kpi-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .kpi-change {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .kpi-change.positive {
+            color: #158454;
+        }
+
+        .kpi-change.negative {
+            color: #ff4757;
+        }
+
+        /* Dashboard Sections */
+        .dashboard-section {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #116c43;
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-icon {
+            font-size: 1rem;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 0.8rem 1rem;
+            background-color: var(--bg-grey);
+            color: var(--text-dark);
+            font-weight: 500;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background-color: #f9f9f9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fff4e5;
+            color: #ffa502;
+        }
+
+        .status-approved {
+            background-color: #e0f9f0;
+            color: var(--primary-color);
+        }
+
+        .status-rejected {
+            background-color: #ffebee;
+            color: #ff4757;
+        }
+
+        .status-completed {
+            background-color: #f1f2f6;
+            color: var(--text-light);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .action-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .filter-select {
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+            font-size: 0.85rem;
+            background-color: white;
+        }
+
+        .search-input {
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+            font-size: 0.85rem;
+            min-width: 200px;
+        }
+
+        /* Mobile Menu Button */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .kpi-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .header-title h1 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .filters {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-select, .search-input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .section-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>MonRepetiteur</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i data-lucide="layout-dashboard"></i> Tableau de bord</a></li>
+                <li><a href="#"><i data-lucide="users"></i> Gestion utilisateurs</a></li>
+                <li><a href="#"><i data-lucide="file-check"></i> Validation dossiers</a></li>
+                <li><a href="#"><i data-lucide="calendar-check"></i> Affectations</a></li>
+                <li><a href="#"><i data-lucide="credit-card"></i> Paiements</a></li>
+                <li><a href="#"><i data-lucide="alert-circle"></i> Réclamations</a></li>
+                <li><a href="#"><i data-lucide="star"></i> Évaluations</a></li>
+                <li><a href="#"><i data-lucide="database"></i> Exportation données</a></li>
+                <li><a href="#"><i data-lucide="bar-chart-2"></i> Statistiques</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <!-- Header -->
+            <header class="header">
+                <button class="menu-btn" id="menu-btn"><i data-lucide="menu"></i></button>
+                <div class="header-title">
+                    <h1>Tableau de bord administrateur</h1>
+                    <p>Vue d'ensemble de la plateforme</p>
+                </div>
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i data-lucide="bell"></i>
+                        <span class="notification-badge">5</span>
+                    </button>
+                    <button class="logout-btn"><i data-lucide="log-out"></i></button>
+                    <div class="profile">
+                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="Profile" class="profile-img">
+                        <div class="profile-info">
+                            <h4>Admin Dupont</h4>
+                            <p>Super administrateur</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Enseignants</span>
+                        <i class="kpi-icon" data-lucide="user-check"></i>
+                    </div>
+                    <div class="kpi-value">142</div>
+                    <div class="kpi-change positive">+12 ce mois</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Parents</span>
+                        <i class="kpi-icon" data-lucide="users"></i>
+                    </div>
+                    <div class="kpi-value">356</div>
+                    <div class="kpi-change positive">+24 ce mois</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Élèves</span>
+                        <i class="kpi-icon" data-lucide="book-open"></i>
+                    </div>
+                    <div class="kpi-value">487</div>
+                    <div class="kpi-change positive">+38 ce mois</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Paiements</span>
+                        <i class="kpi-icon" data-lucide="credit-card"></i>
+                    </div>
+                    <div class="kpi-value">24'560.fcfa</div>
+                    <div class="kpi-change positive">+12% vs mois dernier</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Réclamations</span>
+                        <i class="kpi-icon" data-lucide="alert-circle"></i>
+                    </div>
+                    <div class="kpi-value">8</div>
+                    <div class="kpi-change negative">+2 en attente</div>
+                </div>
+            </div>
+
+            <!-- Validation Section -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Dossiers à valider</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-outline">
+                            <i class="btn-icon" data-lucide="filter"></i> Filtrer
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="btn-icon" data-lucide="refresh-cw"></i> Actualiser
+                        </button>
+                    </div>
+                </div>
+                <div class="filters">
+                    <div class="filter-group">
+                        <span class="filter-label">Statut:</span>
+                        <select class="filter-select">
+                            <option>Tous</option>
+                            <option>En attente</option>
+                            <option>Validés</option>
+                            <option>Rejetés</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">Matière:</span>
+                        <select class="filter-select">
+                            <option>Toutes</option>
+                            <option>Mathématiques</option>
+                            <option>Physique</option>
+                            <option>Chimie</option>
+                            <option>Français</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <input type="text" class="search-input" placeholder="Rechercher...">
+                        <i data-lucide="search" style="color: var(--text-light);"></i>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Enseignant</th>
+                                <th>Matières</th>
+                                <th>Date inscription</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="User" class="user-avatar">
+                                        <div>
+                                            <div class="user-name">Sophie Martin</div>
+                                            <div class="user-role">Mathématiques</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Maths, Algèbre</td>
+                                <td>12/06/2023</td>
+                                <td><span class="status-badge status-pending">En attente</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn" title="Valider"><i data-lucide="check"></i></button>
+                                        <button class="action-btn" title="Rejeter"><i data-lucide="x"></i></button>
+                                        <button class="action-btn" title="Voir dossier"><i data-lucide="eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="User" class="user-avatar">
+                                        <div>
+                                            <div class="user-name">Pierre Dubois</div>
+                                            <div class="user-role">Physique-Chimie</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Physique, Mécanique</td>
+                                <td>10/06/2023</td>
+                                <td><span class="status-badge status-pending">En attente</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn" title="Valider"><i data-lucide="check"></i></button>
+                                        <button class="action-btn" title="Rejeter"><i data-lucide="x"></i></button>
+                                        <button class="action-btn" title="Voir dossier"><i data-lucide="eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="User" class="user-avatar">
+                                        <div>
+                                            <div class="user-name">Anne Müller</div>
+                                            <div class="user-role">Langues</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Français, Anglais</td>
+                                <td>08/06/2023</td>
+                                <td><span class="status-badge status-approved">Validé</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn" title="Voir dossier"><i data-lucide="eye"></i></button>
+                                        <button class="action-btn" title="Modifier"><i data-lucide="edit"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Assignments Section -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Affectations en cours</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-outline">
+                            <i class="btn-icon" data-lucide="filter"></i> Filtrer
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="btn-icon" data-lucide="plus"></i> Nouvelle affectation
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Demandeur</th>
+                                <th>Élève</th>
+                                <th>Matière</th>
+                                <th>Niveau</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="User" class="user-avatar">
+                                        <div>
+                                            <div class="user-name">Marie Lambert</div>
+                                            <div class="user-role">Parent</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Léa Lambert</td>
+                                <td>Mathématiques</td>
+                                <td>3ème </td>
+                                <td><span class="status-badge status-pending">En attente</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn" title="Affecter"><i data-lucide="user-plus"></i></button>
+                                        <button class="action-btn" title="Voir détails"><i data-lucide="eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="User" class="user-avatar">
+                                        <div>
+                                            <div class="user-name">Jean Dubois</div>
+                                            <div class="user-role">Parent</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Thomas Dubois</td>
+                                <td>Physique</td>
+                                <td>5ème </td>
+                                <td><span class="status-badge status-approved">Affecté</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn" title="Modifier"><i data-lucide="edit"></i></button>
+                                        <button class="action-btn" title="Voir détails"><i data-lucide="eye"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="User" class="user-avatar">
+                                        <div>
+                                            <div class="user-name">Sophie Martin</div>
+                                            <div class="user-role">Parent</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Emma Martin</td>
+                                <td>Français</td>
+                                <td>6ème </td>
+                                <td><span class="status-badge status-completed">Terminé</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn" title="Voir détails"><i data-lucide="eye"></i></button>
+                                        <button class="action-btn" title="Exporter"><i data-lucide="download"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Complaints Section -->
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title">Réclamations récentes</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-outline">
+                            <i class="btn-icon" data-lucide="filter"></i> Filtrer
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="btn-icon" data-lucide="download"></i> Exporter
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Utilisateur</th>
+                                <th>Sujet</th>
+                                <th>Statut</th>
+                                <th>Priorité</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15/06/2023</td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="User" class="user-avatar">
+                                        <div class="user-name">Jean Dubois</div>
+                                    </div>
+                                </td>
+                                <td>Problème de paiement</td>
+                                <td><span class="status-badge status-pending">En attente</span></td>
+                                <td><span style="color: #ff4757;">Haute</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn" title="Traiter"><i data-lucide="message-square"></i></button>
+                                        <button class="action-btn" title="Marquer comme résolu"><i data-lucide="check"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>14/06/2023</td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="User" class="user-avatar">
+                                        <div class="user-name">Marie Lambert</div>
+                                    </div>
+                                </td>
+                                <td>Problème avec un enseignant</td>
+                                <td><span class="status-badge status-approved">En cours</span></td>
+                                <td><span style="color: #ffa502;">Moyenne</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn" title="Traiter"><i data-lucide="message-square"></i></button>
+                                        <button class="action-btn" title="Marquer comme résolu"><i data-lucide="check"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>12/06/2023</td>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="User" class="user-avatar">
+                                        <div class="user-name">Marc Weber</div>
+                                    </div>
+                                </td>
+                                <td>Retard de paiement</td>
+                                <td><span class="status-badge status-completed">Résolu</span></td>
+                                <td><span style="color: #2ed573;">Basse</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn" title="Voir"><i data-lucide="eye"></i></button>
+                                        <button class="action-btn" title="Réouvrir"><i data-lucide="rotate-ccw"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('menu-open');
+        });
+
+        // Close menu when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 992) {
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

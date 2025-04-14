@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Parent - Tableau de bord</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/lucide@latest/dist/lucide.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #158454;
+            --primary-light: rgba(21, 132, 84, 0.1);
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #ffffff;
+            --bg-grey: #f5f7fa;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-grey);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: var(--bg-light);
+            padding: 2rem 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.8rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            border-radius: var(--border-radius);
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background-color: var(--bg-light);
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-btn, .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .logout-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .profile-info h4 {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .profile-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Dashboard Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .card-icon {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #116c43;
+        }
+
+        .btn-primary i {
+            font-size: 1rem;
+        }
+
+        /* Children Section */
+        .children-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .child-card {
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            transition: var(--transition);
+        }
+
+        .child-card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .child-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .child-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .child-info h4 {
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .child-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .child-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Requests Section */
+        .request-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .request-info h4 {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+
+        .request-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .request-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fff4e5;
+            color: #ffa502;
+        }
+
+        .status-assigned {
+            background-color: #e0f9f0;
+            color: var(--primary-color);
+        }
+
+        .status-completed {
+            background-color: #f1f2f6;
+            color: var(--text-light);
+        }
+
+        /* Tutors Section */
+        .tutors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tutor-card {
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            transition: var(--transition);
+        }
+
+        .tutor-card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .tutor-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tutor-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .tutor-info h4 {
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .tutor-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .tutor-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.3rem;
+        }
+
+        .tutor-rating i {
+            color: #ffc107;
+            font-size: 0.9rem;
+        }
+
+        .tutor-rating span {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .tutor-subjects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .subject-tag {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
+
+        /* Payments Section */
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .payment-info h4 {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+
+        .payment-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .payment-amount {
+            font-weight: 600;
+        }
+
+        .payment-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-paid {
+            background-color: #e0f9f0;
+            color: var(--primary-color);
+        }
+
+        .status-pending {
+            background-color: #fff4e5;
+            color: #ffa502;
+        }
+
+        .status-failed {
+            background-color: #ffebee;
+            color: #ff4757;
+        }
+
+        /* Ratings Section */
+        .rating-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .rating-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-tutor {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .rating-tutor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .rating-tutor-info h4 {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .rating-tutor-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .rating-stars {
+            color: #ffc107;
+        }
+
+        .rating-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .rating-comment {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-top: 0.5rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 2rem 0 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Mobile Menu Button */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .children-grid, .tutors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>MonRepetiteur</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i data-lucide="home"></i> Accueil</a></li>
+                <li><a href="#"><i data-lucide="users"></i> Mes enfants</a></li>
+                <li><a href="#"><i data-lucide="calendar-plus"></i> Demandes de répétiteur</a></li>
+                <li><a href="#"><i data-lucide="thumbs-up"></i> Recommandations</a></li>
+                <li><a href="#"><i data-lucide="credit-card"></i> Paiements</a></li>
+                <li><a href="#"><i data-lucide="mail"></i> Messagerie</a></li>
+                <li><a href="#"><i data-lucide="help-circle"></i> Réclamations</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <!-- Header -->
+            <header class="header">
+                <button class="menu-btn" id="menu-btn"><i data-lucide="menu"></i></button>
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i data-lucide="bell"></i>
+                        <span class="notification-badge">2</span>
+                    </button>
+                    <button class="logout-btn"><i data-lucide="log-out"></i></button>
+                    <div class="profile">
+                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="Profile" class="profile-img">
+                        <div class="profile-info">
+                            <h4>M. Jean Dubois</h4>
+                            <p>Genève, Suisse</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Profile Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Mon profil</h3>
+                    <i class="card-icon" data-lucide="user"></i>
+                </div>
+                <div class="profile-info">
+                    <p>Parent de 2 enfants enregistrés</p>
+                    <p>Localisation: lomé, agoè</p>
+                    <button class="btn-outline" style="margin-top: 1rem;">
+                        <i data-lucide="edit"></i> Modifier le profil
+                    </button>
+                </div>
+            </div>
+
+            <!-- Children Section -->
+            <h2 class="section-title">Mes enfants</h2>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Enfants enregistrés</h3>
+                    <button class="btn-primary">
+                        <i data-lucide="plus"></i> Ajouter un enfant
+                    </button>
+                </div>
+                <div class="children-grid">
+                    <div class="child-card">
+                        <div class="child-header">
+                            <div class="child-avatar">LD</div>
+                            <div class="child-info">
+                                <h4>Léa Dubois</h4>
+                                <p>4ème  - Mathématiques</p>
+                            </div>
+                        </div>
+                        <div class="child-actions">
+                            <button class="btn-outline">
+                                <i data-lucide="file-text"></i> Relevés
+                            </button>
+                            <button class="btn-outline">
+                                <i data-lucide="edit"></i> Modifier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="child-card">
+                        <div class="child-header">
+                            <div class="child-avatar">TD</div>
+                            <div class="child-info">
+                                <h4>Thomas Dubois</h4>
+                                <p>3ème  - Physique</p>
+                            </div>
+                        </div>
+                        <div class="child-actions">
+                            <button class="btn-outline">
+                                <i data-lucide="file-text"></i> Relevés
+                            </button>
+                            <button class="btn-outline">
+                                <i data-lucide="edit"></i> Modifier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Requests Section -->
+            <h2 class="section-title">Demandes en cours</h2>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Mes demandes</h3>
+                    <button class="btn-primary">
+                        <i data-lucide="plus"></i> Nouvelle demande
+                    </button>
+                </div>
+                <div class="request-item">
+                    <div class="request-info">
+                        <h4>Mathématiques - 4ème</h4>
+                        <p>Pour Léa Dubois - 2h/semaine</p>
+                    </div>
+                    <span class="request-status status-assigned">Affecté</span>
+                </div>
+                <div class="request-item">
+                    <div class="request-info">
+                        <h4>Physique - 3ème </h4>
+                        <p>Pour Thomas Dubois - 1h/semaine</p>
+                    </div>
+                    <span class="request-status status-pending">En attente</span>
+                </div>
+            </div>
+
+            <!-- Tutors Section -->
+            <h2 class="section-title">Suggestions de répétiteurs</h2>
+            <div class="card">
+                <div class="tutors-grid">
+                    <div class="tutor-card">
+                        <div class="tutor-header">
+                            <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="Tutor" class="tutor-avatar">
+                            <div class="tutor-info">
+                                <h4>Prof. Sophie Martin</h4>
+                                <p>Mathématiques, Physique</p>
+                                <div class="tutor-rating">
+                                    <i data-lucide="star" class="filled"></i>
+                                    <i data-lucide="star" class="filled"></i>
+                                    <i data-lucide="star" class="filled"></i>
+                                    <i data-lucide="star" class="filled"></i>
+                                    <i data-lucide="star"></i>
+                                    <span>(12 avis)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tutor-subjects">
+                            <span class="subject-tag">Mathématiques</span>
+                            <span class="subject-tag">Algèbre</span>
+                            <span class="subject-tag">Géométrie</span>
+                        </div>
+                        <button class="btn-primary" style="width: 100%;">
+                            <i data-lucide="user"></i> Consulter le profil
+                        </button>
+                    </div>
+                    <div class="tutor-card">
+                        <div class="tutor-header">
+                            <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="Tutor" class="tutor-avatar">
+                            <div class="tutor-info">
+                                <h4>Prof. Marc Weber</h4>
+                                <p>Physique, Chimie</p>
+                                <div class="tutor-rating">
+                                    <i data-lucide="star" class="filled"></i>
+                                    <i data-lucide="star" class="filled"></i>
+                                    <i data-lucide="star" class="filled"></i>
+                                    <i data-lucide="star" class="filled"></i>
+                                    <i data-lucide="star" class="filled"></i>
+                                    <span>(23 avis)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tutor-subjects">
+                            <span class="subject-tag">Physique</span>
+                            <span class="subject-tag">Mécanique</span>
+                            <span class="subject-tag">Électricité</span>
+                        </div>
+                        <button class="btn-primary" style="width: 100%;">
+                            <i data-lucide="user"></i> Consulter le profil
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payments Section -->
+            <h2 class="section-title">Paiements</h2>
+            <div class="card">
+                <div class="payment-item">
+                    <div class="payment-info">
+                        <h4>Cours de Mathématiques - Léa</h4>
+                        <p>15 juin 2023</p>
+                    </div>
+                    <div>
+                        <div class="payment-amount"> 12000 fcfa.-</div>
+                        <span class="payment-status status-paid">Payé</span>
+                    </div>
+                </div>
+                <div class="payment-item">
+                    <div class="payment-info">
+                        <h4>Cours de Physique - Thomas</h4>
+                        <p>10 juin 2023</p>
+                    </div>
+                    <div>
+                        <div class="payment-amount"> 8000 fcfa.-</div>
+                        <span class="payment-status status-paid">Payé</span>
+                    </div>
+                </div>
+                <div class="payment-item">
+                    <div class="payment-info">
+                        <h4>Abonnement mensuel</h4>
+                        <p>1 juin 2023</p>
+                    </div>
+                    <div>
+                        <div class="payment-amount"> 25000 fcfa.-</div>
+                        <span class="payment-status status-paid">Payé</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ratings Section -->
+            <h2 class="section-title">Mes évaluations</h2>
+            <div class="card">
+                <div class="rating-item">
+                    <div class="rating-header">
+                        <div class="rating-tutor">
+                            <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="Tutor" class="rating-tutor-avatar">
+                            <div class="rating-tutor-info">
+                                <h4>Prof. Anne Müller</h4>
+                                <p>Mathématiques</p>
+                            </div>
+                        </div>
+                        <div class="rating-stars">
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star"></i>
+                            <span class="rating-date">15/05/2023</span>
+                        </div>
+                    </div>
+                    <p class="rating-comment">
+                        "Très bon professeur qui a su s'adapter aux besoins spécifiques de mon enfant. Les progrès sont visibles après seulement quelques séances."
+                    </p>
+                </div>
+                <div class="rating-item">
+                    <div class="rating-header">
+                        <div class="rating-tutor">
+                            <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="Tutor" class="rating-tutor-avatar">
+                            <div class="rating-tutor-info">
+                                <h4>Prof. Pierre Schmidt</h4>
+                                <p>Physique</p>
+                            </div>
+                        </div>
+                        <div class="rating-stars">
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <span class="rating-date">02/05/2023</span>
+                        </div>
+                    </div>
+                    <p class="rating-comment">
+                        "Approche très pédagogique et patience exceptionnelle. Mon fils a enfin compris des concepts qui lui paraissaient incompréhensibles."
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('menu-open');
+        });
+
+        // Close menu when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 992) {
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

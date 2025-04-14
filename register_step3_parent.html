@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Parent - MonRepetiteur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/lucide@latest/dist/lucide.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #158454;
+            --primary-light: rgba(21, 132, 84, 0.1);
+            --text-dark: #111827;
+            --text-light: #6B7280;
+            --bg-light: #ffffff;
+            --bg-grey: #f5f7fa;
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-grey);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Illustration Section */
+        .illustration-section {
+            flex: 1;
+            background-color: var(--primary-color);
+            background-image: linear-gradient(135deg, rgba(21, 132, 84, 0.9), rgba(21, 132, 84, 0.7)), 
+                              url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .illustration-content {
+            max-width: 500px;
+        }
+
+        .illustration-content h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .illustration-content p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .illustration-img {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 2rem;
+        }
+
+        /* Form Section */
+        .form-section {
+            width: 500px;
+            max-width: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: var(--bg-light);
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .logo p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 2rem;
+            counter-reset: step;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        .progress-step {
+            width: 30px;
+            height: 30px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .progress-step::before {
+            counter-increment: step;
+            content: counter(step);
+        }
+
+        .progress-step.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed::before {
+            content: '✓';
+        }
+
+        .progress-connector {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+            z-index: 1;
+            transform: translateY(-50%);
+            transition: var(--transition);
+        }
+
+        /* Form Cards */
+        .form-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .form-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background-color: #f9f9f9;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-light);
+            background-color: white;
+        }
+
+        .form-control.with-icon {
+            padding-left: 2.5rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .radio-option input {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .radio-option input:checked {
+            border-color: var(--primary-color);
+        }
+
+        .radio-option input:checked::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .radio-option span {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '⌄';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        select.form-control {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        /* Dynamic Fields */
+        .dynamic-field {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .dynamic-field .form-control {
+            flex: 1;
+        }
+
+        .remove-field {
+            background-color: #ffebee;
+            color: #ff4757;
+            border: none;
+            width: 40px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-field:hover {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        .add-field {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        /* File Upload */
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(21, 132, 84, 0.05);
+        }
+
+        .file-upload i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            margin: 1.5rem 0;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .checkbox-option input {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .checkbox-option input:checked {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+        }
+
+        .checkbox-option input:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 0.7rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .checkbox-option label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .checkbox-option a {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        /* Form Navigation */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #116c43;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(21, 132, 84, 0.2);
+        }
+
+        .btn-disabled {
+            background-color: #e0e0e0;
+            color: var(--text-light);
+            cursor: not-allowed;
+            border: none;
+        }
+
+        /* Login Form */
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin: 0.5rem 0 1.5rem;
+        }
+
+        .forgot-password a {
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .switch-form a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .illustration-section {
+                padding: 1.5rem;
+                display: none; /* Cache l'illustration sur tablette */
+            }
+
+            .form-section {
+                width: 100%;
+                padding: 1.5rem;
+            }
+
+            .form-container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 1.5rem;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-section {
+                padding: 1rem;
+            }
+
+            .form-title {
+                font-size: 1.3rem;
+            }
+
+            .btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Illustration Section -->
+        <div class="illustration-section">
+            <div class="illustration-content">
+                <h1>Rejoignez notre communauté éducative</h1>
+                <p>Connectez-vous avec les meilleurs enseignants ou trouvez l'accompagnement idéal pour vos enfants</p>
+                <img src="https://cdn-icons-png.flaticon.com/512/4689/4689880.png" alt="Éducation" class="illustration-img">
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-container">
+                <div class="logo">
+                    <h2>MonRepetiteur</h2>
+                    <p>Votre plateforme éducative de confiance</p>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="registration-form active" id="registerForm">
+                    <!-- Progress Bar -->
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-step completed" id="step1">1</div>
+                        <div class="progress-step completed" id="step2">2</div>
+                        <div class="progress-step active" id="step3">3</div>
+                        <div class="progress-connector" id="progressConnector" style="right: 33%;"></div>
+                    </div>
+
+                    <!-- Step 3: Parent Information -->
+                    <div class="form-card active" id="step3Form">
+                        <h2 class="form-title">Informations parent</h2>
+                        
+                        <div class="form-group">
+                            <label for="childrenCount">Nombre d'enfants à inscrire</label>
+                            <input type="number" id="childrenCount" class="form-control" placeholder="Nombre d'enfants" min="1">
+                        </div>
+                        
+                        <div id="childrenFields">
+                            <div class="form-group">
+                                <label>Enfant 1</label>
+                                <div class="dynamic-field">
+                                    <input type="text" class="form-control" placeholder="Nom complet">
+                                    <input type="text" class="form-control" placeholder="Niveau/Classe">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="add-field" id="addChild">
+                            <i data-lucide="plus"></i> Ajouter un autre enfant
+                        </button>
+                        
+                        <div class="form-group">
+                            <label>Relevés de notes (facultatif)</label>
+                            <div class="file-upload" id="gradesUpload">
+                                <i data-lucide="file-text"></i>
+                                <p>Téléchargez les relevés de notes de vos enfants</p>
+                                <input type="file" id="grades" multiple accept=".pdf,.jpg,.png">
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="parentAgreement" required>
+                                <label for="parentAgreement">Je m'engage à respecter les <a href="#">termes d'utilisation</a> de la plateforme.</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button class="btn btn-outline" id="backToStep2" onclick="window.location.href='register_step2.html'">Précédent</button>
+                            <button class="btn btn-primary" id="completeRegistration">
+                                <i data-lucide="credit-card"></i> Payer et finaliser
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script >
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        
+            // Switch between Login and Register forms
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const showLogin = document.getElementById('showLogin');
+            const showRegister = document.getElementById('showRegister');
+        
+            if (showLogin && showRegister) {
+                showLogin.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    loginForm.classList.add('active');
+                    registerForm.classList.remove('active');
+                });
+        
+                showRegister.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    loginForm.classList.remove('active');
+                    registerForm.classList.add('active');
+                });
+            }
+        
+            // Registration Steps
+            const step1Form = document.getElementById('step1Form');
+            const step2Form = document.getElementById('step2Form');
+            const step3Form = document.getElementById('step3Form');
+            const nextToStep2 = document.getElementById('nextToStep2');
+            const backToStep1 = document.getElementById('backToStep1');
+            const nextToStep3 = document.getElementById('nextToStep3');
+            const backToStep2 = document.getElementById('backToStep2');
+            const completeRegistration = document.getElementById('completeRegistration');
+        
+            // Progress Bar Elements
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            const progressConnector = document.getElementById('progressConnector');
+        
+            // Account Type Selection
+            const accountTypeRadios = document.querySelectorAll('input[name="accountType"]');
+            const teacherFields = document.getElementById('teacherFields');
+            const parentFields = document.getElementById('parentFields');
+        
+            if (accountTypeRadios) {
+                accountTypeRadios.forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        if (radio.value === 'teacher') {
+                            teacherFields.style.display = 'block';
+                            parentFields.style.display = 'none';
+                        } else {
+                            teacherFields.style.display = 'none';
+                            parentFields.style.display = 'block';
+                        }
+                    });
+                });
+            }
+        
+            // Navigation between steps
+            if (nextToStep2) {
+                nextToStep2.addEventListener('click', () => {
+                    step1Form.classList.remove('active');
+                    step2Form.classList.add('active');
+                    step1.classList.remove('active');
+                    step1.classList.add('completed');
+                    step2.classList.add('active');
+                    progressConnector.style.right = '66%';
+                });
+            }
+        
+            if (backToStep1) {
+                backToStep1.addEventListener('click', () => {
+                    step2Form.classList.remove('active');
+                    step1Form.classList.add('active');
+                    step1.classList.add('active');
+                    step1.classList.remove('completed');
+                    step2.classList.remove('active');
+                    progressConnector.style.right = '100%';
+                });
+            }
+        
+            if (nextToStep3) {
+                nextToStep3.addEventListener('click', () => {
+                    // Basic validation before proceeding
+                    const fullName = document.getElementById('fullName').value;
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const phone = document.getElementById('phone').value;
+                    const gender = document.getElementById('gender').value;
+                    const city = document.getElementById('city').value;
+        
+                    if (!fullName || !email || !password || !phone || !gender || !city) {
+                        alert('Veuillez remplir tous les champs obligatoires');
+                        return;
+                    }
+        
+                    step2Form.classList.remove('active');
+                    step3Form.classList.add('active');
+                    step2.classList.remove('active');
+                    step2.classList.add('completed');
+                    step3.classList.add('active');
+                    progressConnector.style.right = '33%';
+                });
+            }
+        
+            if (backToStep2) {
+                backToStep2.addEventListener('click', () => {
+                    step3Form.classList.remove('active');
+                    step2Form.classList.add('active');
+                    step2.classList.add('active');
+                    step2.classList.remove('completed');
+                    step3.classList.remove('active');
+                    progressConnector.style.right = '66%';
+                });
+            }
+        
+            if (completeRegistration) {
+                completeRegistration.addEventListener('click', () => {
+                    // Validate teacher or parent specific fields
+                    const isTeacher = document.querySelector('input[name="accountType"]:checked').value === 'teacher';
+                    
+                    if (isTeacher) {
+                        const specialization = document.getElementById('specialization').value;
+                        const levels = document.querySelectorAll('input[name="levels"]:checked');
+                        const experience = document.getElementById('experience').value;
+                        const agreement = document.getElementById('teacherAgreement').checked;
+        
+                        if (!specialization || levels.length === 0 || !experience || !agreement) {
+                            alert('Veuillez remplir tous les champs obligatoires pour les enseignants');
+                            return;
+                        }
+                    } else {
+                        const childrenCount = document.getElementById('childrenCount').value;
+                        const agreement = document.getElementById('parentAgreement').checked;
+        
+                        if (!childrenCount || !agreement) {
+                            alert('Veuillez remplir tous les champs obligatoires pour les parents');
+                            return;
+                        }
+                    }
+        
+                    // Show payment modal (simulated)
+                    alert('Redirection vers le paiement par mobile money (Orange Money ou MTN Mobile Money)');
+                    
+                    // In a real app, you would redirect to payment gateway or show payment form
+                    step3.classList.remove('active');
+                    step3.classList.add('completed');
+                    progressConnector.style.right = '0%';
+                });
+            }
+        
+            // Dynamic fields for children
+            const addChildBtn = document.getElementById('addChild');
+            const childrenFields = document.getElementById('childrenFields');
+            let childCount = 1;
+        
+            if (addChildBtn && childrenFields) {
+                addChildBtn.addEventListener('click', () => {
+                    childCount++;
+                    const newChildField = document.createElement('div');
+                    newChildField.className = 'form-group';
+                    newChildField.innerHTML = `
+                        <label>Enfant ${childCount}</label>
+                        <div class="dynamic-field">
+                            <input type="text" class="form-control" placeholder="Nom complet">
+                            <input type="text" class="form-control" placeholder="Niveau/Classe">
+                            <button type="button" class="remove-field">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    `;
+                    childrenFields.appendChild(newChildField);
+                    lucide.createIcons();
+        
+                    // Add event listener to remove button
+                    const removeBtn = newChildField.querySelector('.remove-field');
+                    removeBtn.addEventListener('click', () => {
+                        childrenFields.removeChild(newChildField);
+                        childCount--;
+                        // Update labels
+                        const childrenGroups = childrenFields.querySelectorAll('.form-group');
+                        childrenGroups.forEach((group, index) => {
+                            group.querySelector('label').textContent = `Enfant ${index + 1}`;
+                        });
+                    });
+                });
+            }
+        
+            // File upload interactions
+            const diplomaUpload = document.getElementById('diplomaUpload');
+            const profileUpload = document.getElementById('profileUpload');
+            const gradesUpload = document.getElementById('gradesUpload');
+        
+            [diplomaUpload, profileUpload, gradesUpload].forEach(upload => {
+                if (upload) {
+                    const input = upload.querySelector('input[type="file"]');
+                    const icon = upload.querySelector('i');
+                    const text = upload.querySelector('p');
+        
+                    input.addEventListener('change', () => {
+                        if (input.files.length > 0) {
+                            if (input === document.getElementById('diplomas')) {
+                                text.textContent = `${input.files.length} fichier(s) sélectionné(s)`;
+                            } else {
+                                text.textContent = input.files[0].name;
+                            }
+                            upload.style.borderColor = "var(--primary-color)";
+                            upload.style.backgroundColor = 'rgba(21, 132, 84, 0.05)';
+                            icon.style.color = "var(--primary-color)";
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

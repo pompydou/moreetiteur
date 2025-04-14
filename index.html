@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<<<<<<< HEAD
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscription</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/alpinejs" defer></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <style>
+    /* Forcer la couleur bleue */
+    button.bg-\[\#3B82F6\] {
+      background-color: #158454 !important;
+    }
+    
+    /* État hover */
+    button.hover\:bg-\[\#2563EB\]:hover {
+      background-color: #158454 !important;
+    }
+  </style>
+
+</head>
+<body class="bg-white text-[#111827]">
+  <div class="min-h-screen flex flex-col md:flex-row">
+    <!-- Colonne gauche -->
+    <div class="md:w-1/2 hidden md:flex items-center justify-center bg-white p-8">
+        <div class="text-center max-w-md space-y-5 text-black">
+          <img 
+            src="https://c7.alamy.com/compfr/2xrkbhe/concept-de-reunion-parent-enseignant-engager-une-discussion-sur-les-progres-des-eleves-parents-et-enseignant-communiquant-dans-une-salle-de-classe-illustration-vectorielle-2xrkbhe.jpg" 
+            alt="Illustration" 
+          />
+      
+          <h2 class="text-4xl font-extrabold text-black">Bienvenue sur </h2>
+          
+          <p class="text-lg text-black">
+            Une plateforme innovante qui connecte les parents et les enseignants pour un meilleur suivi scolaire.
+          </p>
+      
+         
+      
+          <p class="text-sm text-black">
+            Rejoignez-nous dès aujourd'hui pour contribuer à la réussite éducative de nos enfants.
+          </p>
+      
+          <div class="mt-6 text-sm text-black">
+            <p class="font-semibold">Contactez-nous :</p>
+            <p>📞 <a href="tel:+22890000000" class="underline">+228 90 00 00 00</a></p>
+            <p>✉️ <a href="mailto:support@educalliance.tg" class="underline">support@educalliance.tg</a></p>
+            <p>📍 Tokoin, Lomé - Togo</p>
+          </div>
+        </div>
+      </div>
+      
+      
+
+    <!-- Colonne droite -->
+    <div class="w-full md:w-1/2 flex items-center justify-center p-4">
+      <div x-data="registrationForm()" class="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8">
+
+        <!-- Barre de progression -->
+        <div class="flex items-center justify-between mb-6 relative">
+          <div class="absolute top-3 left-0 right-0 h-1 bg-[#E5E7EB] rounded-full z-0"></div>
+          <template x-for="step in 3">
+            <div class="relative z-10 flex-1 text-center">
+              <div :class="{
+                'bg-green-500': currentStep > step,
+                'bg-[#3B82F6]': currentStep === step,
+                'bg-white border-2 border-[#3B82F6] text-[#3B82F6]': currentStep < step
+              }" class="h-6 w-6 mx-auto rounded-full flex items-center justify-center text-sm font-semibold">
+                <span x-text="step"></span>
+              </div>
+              <span class="text-sm block mt-1" x-text="'Étape ' + step"></span>
+            </div>
+          </template>
+        </div>
+
+        <!-- Étape 1: Informations de base -->
+        <div x-show="currentStep === 1" class="space-y-4">
+          <h2 class="text-xl font-semibold mb-2">Informations de base</h2>
+
+          <div>
+            <label class="block font-medium">Qui êtes-vous ?</label>
+            <div class="flex space-x-4 mt-1">
+              <label class="flex items-center">
+                <input type="radio" value="enseignant" x-model="role" class="mr-2" /> Enseignant
+              </label>
+              <label class="flex items-center">
+                <input type="radio" value="parent" x-model="role" class="mr-2" /> Parent
+              </label>
+            </div>
+          </div>
+
+          <input type="text" placeholder="Nom complet" class="w-full border rounded p-2" x-model="form.nom" />
+          <input type="email" placeholder="Adresse email" class="w-full border rounded p-2" x-model="form.email" />
+          <input type="password" placeholder="Mot de passe" class="w-full border rounded p-2" x-model="form.password" />
+          <input type="tel" placeholder="Téléphone" class="w-full border rounded p-2" x-model="form.telephone" />
+
+          <select class="w-full border rounded p-2" x-model="form.sexe">
+            <option disabled selected>Sélectionnez votre sexe</option>
+            <option>Homme</option>
+            <option>Femme</option>
+            <option>Autre</option>
+          </select>
+
+                <select class="w-full border rounded p-2 mb-4" x-model="form.ville">
+            <option disabled selected>Sélectionnez votre ville/région</option>
+            <!-- Quartiers de Lomé -->
+            <option>Tokoin (Lomé)</option>
+            <option>Bè (Lomé)</option>
+            <option>Agoè (Lomé)</option>
+            <option>Nyékonakpoè (Lomé)</option>
+            <option>Dékon (Lomé)</option>
+            <option>Forever (Lomé)</option>
+            <option>Adidogomé (Lomé)</option>
+        
+            <!-- Autres villes -->
+            <option>Quartier Alédjo (Sokodé)</option>
+            <option>Quartier Sarakawa (Kara)</option>
+            <option>Quartier Zongo (Atakpamé)</option>
+            <option>Hédzranawoé (Kpalimé)</option>
+            <option>Logopé (Kpalimé)</option>
+            <option>Quartier Nayiégou (Dapaong)</option>
+            <option>Agoè-Nyivé (Tsévié)</option>
+            <option>Quartier Gbétché (Aného)</option>
+            <option>Quartier Lama-Tessi (Bassar)</option>
+            <option>Quartier Kpangalam (Mango)</option>
+        </select>
+
+             <div class="mt-6">
+                <button @click="nextStep()" 
+                class="w-full bg-[#3B82F6] text-white font-semibold py-3 rounded-md hover:bg-[#2563EB] transition border border-[#3B82F6] hover:border-[#2563EB]">
+          Suivant
+        </button>
+              </div>
+        </div>
+
+        <!-- Étape 2: Spécifique au rôle -->
+        <div x-show="currentStep === 2" class="space-y-4">
+          <h2 class="text-xl font-semibold mb-2" x-text="role === 'enseignant' ? 'Informations Enseignant' : 'Informations Parent'"></h2>
+
+          <!-- Enseignant -->
+          <template x-if="role === 'enseignant'">
+            <div class="space-y-4">
+              <label class="mt-4">Niveau d’enseignement préféré</label>
+              <div class="flex flex-wrap gap-2">
+                <template x-for="niveau in Object.keys(matieresParNiveau)" :key="niveau">
+                  <label>
+                    <input type="checkbox" :value="niveau" x-model="form.niveaux" class="mr-1"/> <span x-text="niveau"></span>
+                  </label>
+                </template>
+              </div>
+
+              <template x-for="niveau in form.niveaux" :key="niveau">
+                <div class="border rounded p-3">
+                  <h3 class="text-md font-semibold mb-2" x-text="niveau"></h3>
+                  <div class="grid grid-cols-2 gap-2">
+                    <template x-for="matiere in matieresParNiveau[niveau]" :key="matiere">
+                      <label class="flex items-center space-x-2">
+                        <input type="checkbox" :value="matiere" x-model="form.matieres" />
+                        <span x-text="matiere"></span>
+                      </label>
+                    </template>
+                  </div>
+                </div>
+              </template>
+
+              <template x-if="matiereError">
+                <p class="text-red-600 text-sm">Veuillez sélectionner au moins 3 matières.</p>
+              </template>
+
+              <input type="number" placeholder="Années d’expérience" class="w-full border rounded p-2" x-model="form.experience" />
+              <input type="file" accept="application/pdf,image/*" class="w-full" />
+              <input type="file" accept="image/*" class="w-full" />
+              <label class="flex items-center"><input type="checkbox" class="mr-2" /> Je certifie que les informations sont exactes</label>
+            </div>
+          </template>
+          
+
+          <template x-if="role === 'parent'">
+            <div class="space-y-2">
+              <input type="number" placeholder="Nombre d’enfants" class="w-full border rounded p-2" x-model="form.nbEnfants" />
+              <!-- Enfants dynamiques -->
+              <template x-for="i in parseInt(form.nbEnfants || 0)" :key="i">
+                <div class="space-y-1">
+                  <input type="text" :placeholder="'Nom de l\'enfant ' + i" class="w-full border rounded p-2" />
+                  <input type="text" :placeholder="'Niveau de classe de l\'enfant ' + i" class="w-full border rounded p-2" />
+                </div>
+              </template>
+              <input type="file" multiple class="w-full" />
+              <label class="flex items-center"><input type="checkbox" class="mr-2" /> J'accepte les conditions d'utilisation</label>
+            </div>
+          </template>
+
+          <div class="flex justify-between mt-6">
+            <button @click="prevStep()" 
+                    class="bg-[#3B82F6] text-white py-2 px-6 rounded-md hover:bg-[#2563EB] transition border border-[#3B82F6] hover:border-[#2563EB]">
+              Retour
+            </button>
+            <button @click="nextStep()" 
+                    class="bg-[#3B82F6] text-white py-2 px-6 rounded-md hover:bg-[#2563EB] transition border border-[#3B82F6] hover:border-[#2563EB]">
+              Suivant
+            </button>
+          </div>
+        </div>
+
+        <!-- Étape 3: Paiement -->
+        <div x-show="currentStep === 3" class="space-y-4">
+          <h2 class="text-xl font-semibold mb-2">Paiement</h2>
+          <p>Choisissez votre méthode de paiement :</p>
+          <div class="space-y-2">
+            <label class="block"><input type="radio" name="paiement" class="mr-2" /> Mobile Money (Yass)</label>
+            <label class="block"><input type="radio" name="paiement" class="mr-2" /> Flooz</label>
+          </div>
+          <div class="flex justify-between mt-6">
+            <button @click="prevStep()" 
+                    class="bg-[#3B82F6] text-white py-2 px-6 rounded-md hover:bg-[#2563EB] transition border border-[#3B82F6] hover:border-[#2563EB]">
+              Retour
+            </button>
+            <button class="bg-[#3B82F6] text-white py-2 px-6 rounded-md hover:bg-[#2563EB] transition border border-[#3B82F6] hover:border-[#2563EB]">
+              Créer mon compte
+            </button>
+          </div>
+        </div>
+
+        <!-- Lien bas de page -->
+        <p class="mt-6 text-sm text-center">Vous avez déjà un compte ? <a href="#" class="text-[#3B82F6] underline">Se connecter</a></p>
+      </div>
+    </div>
+  </div>
+
+    <script>
+        function registrationForm() {
+          return {
+            currentStep: 1,
+            role: '',
+            matiereError: false,
+            form: {
+              nom: '',
+              email: '',
+              password: '',
+              telephone: '',
+              sexe: '',
+              ville: '',
+              matieres: [],
+              niveaux: [],
+              experience: '',
+              nbEnfants: 0
+            },
+            matieresParNiveau: {
+              "Collège": [
+                "Français", "Mathématiques", "Histoire-Géographie-EMC", "SVT",
+                "Physique-Chimie", "Technologie", "Anglais", "Arts Plastiques", "Éducation Musicale"
+              ],
+              "Lycée Général": [
+                "Spécialité Mathématiques", "Spécialité Physique-Chimie", "Spécialité SVT",
+                "Philosophie", "Anglais", "Espagnol", "Allemand"
+              ],
+              "Lycée Technologique": [
+                "Génie Électrique et Électronique", "Génie Mécanique et Productique",
+                "Génie Biologique", "Génie des Procédés", "Génie des Matériaux",
+                "Génie des Systèmes Industriels", "Génie des Systèmes Numériques"
+              ],
+              "Lycée Professionnel": [
+                "Électrotechnique", "Métiers de la Restauration", "Commerce-Vente", "Maintenance Industrielle"
+              ]
+            },
+            nextStep() {
+              if (this.currentStep === 2 && this.role === 'enseignant') {
+                if (this.form.matieres.length < 3) {
+                  this.matiereError = true;
+                  return;
+                } else {
+                  this.matiereError = false;
+                }
+              }
+              this.currentStep++;
+            },
+            prevStep() {
+              if (this.currentStep > 1) this.currentStep--;
+            }
+          }
+=======
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Plateforme Éducative</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/lucide@latest/dist/lucide.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #158454;
+            --primary-light: rgba(21, 132, 84, 0.1);
+            --text-dark: #111827;
+            --text-light: #6B7280;
+            --bg-light: #ffffff;
+            --bg-grey: #f5f7fa;
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+>>>>>>> c9cdcb6 (Ton message de commit ici)
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-grey);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Illustration Section */
+        .illustration-section {
+            flex: 1;
+            background-color: var(--primary-color);
+            background-image: linear-gradient(135deg, rgba(21, 132, 84, 0.9), rgba(21, 132, 84, 0.7)), 
+                              url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .illustration-content {
+            max-width: 500px;
+        }
+
+        .illustration-content h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .illustration-content p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .illustration-img {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 2rem;
+        }
+
+        /* Form Section */
+        .form-section {
+            width: 500px;
+            max-width: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: var(--bg-light);
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .logo p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 2rem;
+            counter-reset: step;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        .progress-step {
+            width: 30px;
+            height: 30px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .progress-step::before {
+            counter-increment: step;
+            content: counter(step);
+        }
+
+        .progress-step.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed::before {
+            content: '✓';
+        }
+
+        .progress-connector {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+            z-index: 1;
+            transform: translateY(-50%);
+            transition: var(--transition);
+        }
+
+        /* Form Cards */
+        .form-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .form-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background-color: #f9f9f9;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-light);
+            background-color: white;
+        }
+
+        .form-control.with-icon {
+            padding-left: 2.5rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .radio-option input {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .radio-option input:checked {
+            border-color: var(--primary-color);
+        }
+
+        .radio-option input:checked::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .radio-option span {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '⌄';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        select.form-control {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        /* Dynamic Fields */
+        .dynamic-field {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .dynamic-field .form-control {
+            flex: 1;
+        }
+
+        .remove-field {
+            background-color: #ffebee;
+            color: #ff4757;
+            border: none;
+            width: 40px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-field:hover {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        .add-field {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        /* File Upload */
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(21, 132, 84, 0.05);
+        }
+
+        .file-upload i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            margin: 1.5rem 0;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .checkbox-option input {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .checkbox-option input:checked {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+        }
+
+        .checkbox-option input:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 0.7rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .checkbox-option label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .checkbox-option a {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        /* Form Navigation */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #116c43;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(21, 132, 84, 0.2);
+        }
+
+        .btn-disabled {
+            background-color: #e0e0e0;
+            color: var(--text-light);
+            cursor: not-allowed;
+            border: none;
+        }
+
+        /* Login Form */
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin: 0.5rem 0 1.5rem;
+        }
+
+        .forgot-password a {
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .switch-form a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .illustration-section {
+                padding: 1.5rem;
+                display: none; /* Cache l'illustration sur tablette */
+            }
+
+            .form-section {
+                width: 100%;
+                padding: 1.5rem;
+            }
+
+            .form-container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 1.5rem;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-section {
+                padding: 1rem;
+            }
+
+            .form-title {
+                font-size: 1.3rem;
+            }
+
+            .btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Illustration Section (visible seulement sur desktop) -->
+        <div class="illustration-section">
+            <div class="illustration-content">
+                <h1>Rejoignez notre communauté éducative</h1>
+                <p>Connectez-vous avec les meilleurs enseignants ou trouvez l'accompagnement idéal pour vos enfants</p>
+                <img src="https://cdn-icons-png.flaticon.com/512/4689/4689880.png" alt="Éducation" class="illustration-img">
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-container">
+                <div class="logo">
+                    <h2>MonRepetiteur</h2>
+                    <p>Votre plateforme éducative de confiance</p>
+                </div>
+
+                <!-- Login Form (hidden by default) -->
+                <div class="login-form" id="loginForm">
+                    <div class="form-card active">
+                        <h2 class="form-title">Connexion</h2>
+                        
+                        <div class="form-group">
+                            <label for="loginEmail">Email ou nom d'utilisateur</label>
+                            <div class="input-wrapper">
+                                <i class="input-icon" data-lucide="mail"></i>
+                                <input type="text" id="loginEmail" class="form-control with-icon" placeholder="entrez votre email ou nom d'utilisateur">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Mot de passe</label>
+                            <div class="input-wrapper">
+                                <i class="input-icon" data-lucide="lock"></i>
+                                <input type="password" id="loginPassword" class="form-control with-icon" placeholder="entrez votre mot de passe">
+                            </div>
+                        </div>
+                        
+                        <div class="forgot-password">
+                            <a href="#">Mot de passe oublié ?</a>
+                        </div>
+                        
+                        <button class="btn btn-primary" style="width: 100%;">
+                            <i data-lucide="log-in"></i> Se connecter
+                        </button>
+                        
+                        <div class="switch-form">
+                            Vous n'avez pas de compte ? <a href="#" id="showRegister">S'inscrire</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="registration-form" id="registerForm">
+                    <!-- Progress Bar -->
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-step active" id="step1">1</div>
+                        <div class="progress-step" id="step2">2</div>
+                        <div class="progress-step" id="step3">3</div>
+                        <div class="progress-connector" id="progressConnector"></div>
+                    </div>
+
+                    <!-- Step 1: Account Type -->
+                    <div class="form-card active" id="step1Form">
+                        <h2 class="form-title">Qui êtes-vous ?</h2>
+                        
+                        <div class="form-group">
+                            <p>Je m'inscris en tant que :</p>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="accountType" value="teacher" checked>
+                                    <span>Enseignant</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="accountType" value="parent">
+                                    <span>Parent</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button class="btn btn-disabled" disabled>Précédent</button>
+                            <button class="btn btn-primary" id="nextToStep2">Suivant</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Common Information -->
+                    <div class="form-card" id="step2Form">
+                        <h2 class="form-title">Informations de base</h2>
+                        
+                        <div class="form-group">
+                            <label for="fullName">Nom complet</label>
+                            <input type="text" id="fullName" class="form-control" placeholder="Votre nom complet">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Adresse email</label>
+                            <div class="input-wrapper">
+                                <i class="input-icon" data-lucide="mail"></i>
+                                <input type="email" id="email" class="form-control with-icon" placeholder="exemple@email.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Mot de passe</label>
+                            <div class="input-wrapper">
+                                <i class="input-icon" data-lucide="lock"></i>
+                                <input type="password" id="password" class="form-control with-icon" placeholder="Créez un mot de passe sécurisé">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Numéro de téléphone</label>
+                            <div class="input-wrapper">
+                                <i class="input-icon" data-lucide="phone"></i>
+                                <input type="tel" id="phone" class="form-control with-icon" placeholder="+225 XX XX XX XX">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gender">Sexe</label>
+                            <div class="select-wrapper">
+                                <select id="gender" class="form-control">
+                                    <option value="" disabled selected>Sélectionnez votre sexe</option>
+                                    <option value="male">Homme</option>
+                                    <option value="female">Femme</option>
+                                    <option value="other">Autre</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="city">Ville/Région</label>
+                            <div class="select-wrapper">
+                                <select id="city" class="form-control">
+                                    <option value="" disabled selected>Sélectionnez votre ville</option>
+                                    <option>Abidjan</option>
+                                    <option>Bouaké</option>
+                                    <option>Daloa</option>
+                                    <option>Yamoussoukro</option>
+                                    <option>San-Pédro</option>
+                                    <option>Autre</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button class="btn btn-outline" id="backToStep1">Précédent</button>
+                            <button class="btn btn-primary" id="nextToStep3">Suivant</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Specific Information -->
+                    <div class="form-card" id="step3Form">
+                        <!-- Teacher Specific Fields -->
+                        <div id="teacherFields">
+                            <h2 class="form-title">Informations enseignant</h2>
+                            
+                            <div class="form-group">
+                                <label for="specialization">Domaine de spécialisation</label>
+                                <div class="select-wrapper">
+                                    <select id="specialization" class="form-control">
+                                        <option value="" disabled selected>Sélectionnez votre spécialité</option>
+                                        <option>Mathématiques</option>
+                                        <option>Physique-Chimie</option>
+                                        <option>Français</option>
+                                        <option>Anglais</option>
+                                        <option>Histoire-Géographie</option>
+                                        <option>SVT</option>
+                                        <option>Philosophie</option>
+                                        <option>Autre</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Niveaux enseignés</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-option">
+                                        <input type="checkbox" id="primary" name="levels" value="primary">
+                                        <label for="primary">Primaire</label>
+                                    </div>
+                                    <div class="checkbox-option">
+                                        <input type="checkbox" id="middle" name="levels" value="middle">
+                                        <label for="middle">Collège</label>
+                                    </div>
+                                    <div class="checkbox-option">
+                                        <input type="checkbox" id="high" name="levels" value="high">
+                                        <label for="high">Lycée</label>
+                                    </div>
+                                    <div class="checkbox-option">
+                                        <input type="checkbox" id="university" name="levels" value="university">
+                                        <label for="university">Université</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="experience">Années d'expérience</label>
+                                <input type="number" id="experience" class="form-control" placeholder="Nombre d'années d'expérience">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Diplômes/Certificats</label>
+                                <div class="file-upload" id="diplomaUpload">
+                                    <i data-lucide="upload"></i>
+                                    <p>Glissez-déposez vos fichiers ou cliquez pour parcourir</p>
+                                    <input type="file" id="diplomas" multiple accept=".pdf,.jpg,.png">
+                                </div>
+                                <small>Formats acceptés: PDF, JPG, PNG (max 5MB)</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Photo de profil</label>
+                                <div class="file-upload" id="profileUpload">
+                                    <i data-lucide="user"></i>
+                                    <p>Téléchargez une photo claire de votre visage</p>
+                                    <input type="file" id="profilePhoto" accept=".jpg,.png">
+                                </div>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="teacherAgreement" required>
+                                    <label for="teacherAgreement">Je certifie que les informations fournies sont exactes et j'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a>.</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Parent Specific Fields -->
+                        <div id="parentFields" style="display: none;">
+                            <h2 class="form-title">Informations parent</h2>
+                            
+                            <div class="form-group">
+                                <label for="childrenCount">Nombre d'enfants à inscrire</label>
+                                <input type="number" id="childrenCount" class="form-control" placeholder="Nombre d'enfants" min="1">
+                            </div>
+                            
+                            <div id="childrenFields">
+                                <div class="form-group">
+                                    <label>Enfant 1</label>
+                                    <div class="dynamic-field">
+                                        <input type="text" class="form-control" placeholder="Nom complet">
+                                        <input type="text" class="form-control" placeholder="Niveau/Classe">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="add-field" id="addChild">
+                                <i data-lucide="plus"></i> Ajouter un autre enfant
+                            </button>
+                            
+                            <div class="form-group">
+                                <label>Relevés de notes (facultatif)</label>
+                                <div class="file-upload" id="gradesUpload">
+                                    <i data-lucide="file-text"></i>
+                                    <p>Téléchargez les relevés de notes de vos enfants</p>
+                                    <input type="file" id="grades" multiple accept=".pdf,.jpg,.png">
+                                </div>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="parentAgreement" required>
+                                    <label for="parentAgreement">Je m'engage à respecter les <a href="#">termes d'utilisation</a> de la plateforme.</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button class="btn btn-outline" id="backToStep2">Précédent</button>
+                            <button class="btn btn-primary" id="completeRegistration">
+                                <i data-lucide="credit-card"></i> Payer et finaliser
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Switch between Login and Register -->
+                <div class="switch-form">
+                    Vous avez déjà un compte ? <a href="#" id="showLogin">Se connecter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+
+        // Switch between Login and Register forms
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const showLogin = document.getElementById('showLogin');
+        const showRegister = document.getElementById('showRegister');
+
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+        });
+
+        showRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.remove('active');
+            registerForm.classList.add('active');
+        });
+
+        // Registration Steps
+        const step1Form = document.getElementById('step1Form');
+        const step2Form = document.getElementById('step2Form');
+        const step3Form = document.getElementById('step3Form');
+        const nextToStep2 = document.getElementById('nextToStep2');
+        const backToStep1 = document.getElementById('backToStep1');
+        const nextToStep3 = document.getElementById('nextToStep3');
+        const backToStep2 = document.getElementById('backToStep2');
+        const completeRegistration = document.getElementById('completeRegistration');
+
+        // Progress Bar Elements
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+        const progressConnector = document.getElementById('progressConnector');
+
+        // Account Type Selection
+        const accountTypeRadios = document.querySelectorAll('input[name="accountType"]');
+        const teacherFields = document.getElementById('teacherFields');
+        const parentFields = document.getElementById('parentFields');
+
+        accountTypeRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.value === 'teacher') {
+                    teacherFields.style.display = 'block';
+                    parentFields.style.display = 'none';
+                } else {
+                    teacherFields.style.display = 'none';
+                    parentFields.style.display = 'block';
+                }
+            });
+        });
+
+        // Navigation between steps
+        nextToStep2.addEventListener('click', () => {
+            step1Form.classList.remove('active');
+            step2Form.classList.add('active');
+            step1.classList.remove('active');
+            step1.classList.add('completed');
+            step2.classList.add('active');
+            progressConnector.style.right = '66%';
+        });
+
+        backToStep1.addEventListener('click', () => {
+            step2Form.classList.remove('active');
+            step1Form.classList.add('active');
+            step1.classList.add('active');
+            step1.classList.remove('completed');
+            step2.classList.remove('active');
+            progressConnector.style.right = '100%';
+        });
+
+        nextToStep3.addEventListener('click', () => {
+            // Basic validation before proceeding
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const phone = document.getElementById('phone').value;
+            const gender = document.getElementById('gender').value;
+            const city = document.getElementById('city').value;
+
+            if (!fullName || !email || !password || !phone || !gender || !city) {
+                alert('Veuillez remplir tous les champs obligatoires');
+                return;
+            }
+
+            step2Form.classList.remove('active');
+            step3Form.classList.add('active');
+            step2.classList.remove('active');
+            step2.classList.add('completed');
+            step3.classList.add('active');
+            progressConnector.style.right = '33%';
+        });
+
+        backToStep2.addEventListener('click', () => {
+            step3Form.classList.remove('active');
+            step2Form.classList.add('active');
+            step2.classList.add('active');
+            step2.classList.remove('completed');
+            step3.classList.remove('active');
+            progressConnector.style.right = '66%';
+        });
+
+        completeRegistration.addEventListener('click', () => {
+            // Validate teacher or parent specific fields
+            const isTeacher = document.querySelector('input[name="accountType"]:checked').value === 'teacher';
+            
+            if (isTeacher) {
+                const specialization = document.getElementById('specialization').value;
+                const levels = document.querySelectorAll('input[name="levels"]:checked');
+                const experience = document.getElementById('experience').value;
+                const agreement = document.getElementById('teacherAgreement').checked;
+
+                if (!specialization || levels.length === 0 || !experience || !agreement) {
+                    alert('Veuillez remplir tous les champs obligatoires pour les enseignants');
+                    return;
+                }
+            } else {
+                const childrenCount = document.getElementById('childrenCount').value;
+                const agreement = document.getElementById('parentAgreement').checked;
+
+                if (!childrenCount || !agreement) {
+                    alert('Veuillez remplir tous les champs obligatoires pour les parents');
+                    return;
+                }
+            }
+
+            // Show payment modal (simulated)
+            alert('Redirection vers le paiement par mobile money (Orange Money ou MTN Mobile Money)');
+            
+            // In a real app, you would redirect to payment gateway or show payment form
+            step3.classList.remove('active');
+            step3.classList.add('completed');
+            progressConnector.style.right = '0%';
+        });
+
+        // Dynamic fields for children
+        const addChildBtn = document.getElementById('addChild');
+        const childrenFields = document.getElementById('childrenFields');
+        let childCount = 1;
+
+        addChildBtn.addEventListener('click', () => {
+            childCount++;
+            const newChildField = document.createElement('div');
+            newChildField.className = 'form-group';
+            newChildField.innerHTML = `
+                <label>Enfant ${childCount}</label>
+                <div class="dynamic-field">
+                    <input type="text" class="form-control" placeholder="Nom complet">
+                    <input type="text" class="form-control" placeholder="Niveau/Classe">
+                    <button type="button" class="remove-field">
+                        <i data-lucide="trash-2"></i>
+                    </button>
+                </div>
+            `;
+            childrenFields.appendChild(newChildField);
+            lucide.createIcons();
+
+            // Add event listener to remove button
+            const removeBtn = newChildField.querySelector('.remove-field');
+            removeBtn.addEventListener('click', () => {
+                childrenFields.removeChild(newChildField);
+                childCount--;
+                // Update labels
+                const childrenGroups = childrenFields.querySelectorAll('.form-group');
+                childrenGroups.forEach((group, index) => {
+                    group.querySelector('label').textContent = `Enfant ${index + 1}`;
+                });
+            });
+        });
+
+        // File upload interactions
+        const diplomaUpload = document.getElementById('diplomaUpload');
+        const profileUpload = document.getElementById('profileUpload');
+        const gradesUpload = document.getElementById('gradesUpload');
+
+        [diplomaUpload, profileUpload, gradesUpload].forEach(upload => {
+            const input = upload.querySelector('input[type="file"]');
+            const icon = upload.querySelector('i');
+            const text = upload.querySelector('p');
+
+            input.addEventListener('change', () => {
+                if (input.files.length > 0) {
+                    if (input === document.getElementById('diplomas')) {
+                        text.textContent = `${input.files.length} fichier(s) sélectionné(s)`;
+                    } else {
+                        text.textContent = input.files[0].name;
+                    }
+                    upload.style.borderColor = "var(--primary-color)";
+                    upload.style.backgroundColor = 'rgba(21, 132, 84, 0.05)';
+                    icon.style.color = "var(--primary-color)";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

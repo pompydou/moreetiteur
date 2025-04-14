@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Enseignant - Tableau de bord</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/lucide@latest/dist/lucide.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #158454;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #ffffff;
+            --bg-grey: #f5f5f5;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-grey);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: var(--bg-light);
+            padding: 2rem 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.8rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            border-radius: var(--border-radius);
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(21, 132, 84, 0.1);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background-color: var(--bg-light);
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-btn, .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .logout-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .profile-info h4 {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .profile-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Dashboard Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .card-icon {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .profile-card-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+        }
+
+        .profile-card-info h3 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-card-info p {
+            color: var(--text-light);
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(21, 132, 84, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Assignments Section */
+        .assignment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .assignment-info h4 {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+
+        .assignment-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .assignment-date {
+            background-color: rgba(21, 132, 84, 0.1);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* Ratings Section */
+        .rating-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .rating-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-stars {
+            color: #ffc107;
+        }
+
+        .rating-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .rating-comment {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        /* Training Section */
+        .training-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .training-info h4 {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+
+        .training-info p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .training-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .training-btn:hover {
+            background-color: #116c43;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 2rem 0 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Mobile Menu Button */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>MonRepetiteur</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i data-lucide="home"></i> Accueil</a></li>
+                <li><a href="#"><i data-lucide="calendar-check"></i> Mes affectations</a></li>
+                <li><a href="#"><i data-lucide="user"></i> Mon profil</a></li>
+                <li><a href="#"><i data-lucide="credit-card"></i> Paiements</a></li>
+                <li><a href="#"><i data-lucide="book-open"></i> Formations</a></li>
+                <li><a href="#"><i data-lucide="mail"></i> Messagerie</a></li>
+                <li><a href="#"><i data-lucide="help-circle"></i> Support / Réclamations</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <!-- Header -->
+            <header class="header">
+                <button class="menu-btn" id="menu-btn"><i data-lucide="menu"></i></button>
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i data-lucide="bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="logout-btn"><i data-lucide="log-out"></i></button>
+                    <div class="profile">
+                        <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="Profile" class="profile-img">
+                        <div class="profile-info">
+                            <h4>Prof. Sophie Martin</h4>
+                            <p>Mathématiques</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Profile Card -->
+                <div class="card profile-card">
+                    <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-a4f8-6230-93cc-3413cfeddba4/raw?se=2025-04-14T00%3A44%3A18Z&sp=r&sv=2024-08-04&sr=b&scid=82462459-77e0-5b0e-8dd6-2b37935dfb64&skoid=d958ec58-d47c-4d2f-a9f2-7f3e03fdcf72&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-13T19%3A25%3A03Z&ske=2025-04-14T19%3A25%3A03Z&sks=b&skv=2024-08-04&sig=348x3UAYYZ23AhTMs432P4edoV8H0AKlAtzOaWPzTkQ%3D" alt="Profile" class="profile-card-img">
+                    <div class="profile-card-info">
+                        <h3>Sophie Martin</h3>
+                        <p>Enseignante en Mathématiques</p>
+                        <span class="status-badge">Profil vérifié</span>
+                    </div>
+                </div>
+
+                <!-- Assignments Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Prochaines affectations</h3>
+                        <i class="card-icon" data-lucide="calendar-clock"></i>
+                    </div>
+                    <div class="assignment-item">
+                        <div class="assignment-info">
+                            <h4>Cours particuliers - Jean Dupont</h4>
+                            <p>Mathématiques - Niveau Terminale</p>
+                        </div>
+                        <span class="assignment-date">Aujourd'hui, 16h</span>
+                    </div>
+                    <div class="assignment-item">
+                        <div class="assignment-info">
+                            <h4>Groupe de révision - 5 élèves</h4>
+                            <p>Préparation Bac - 1ère</p>
+                        </div>
+                        <span class="assignment-date">Demain, 14h</span>
+                    </div>
+                </div>
+
+                <!-- Stats Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Statistiques</h3>
+                        <i class="card-icon" data-lucide="bar-chart-2"></i>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Élèves</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">48</div>
+                            <div class="stat-label">Heures</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.8</div>
+                            <div class="stat-label">Note moyenne</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ratings Section -->
+            <h2 class="section-title">Mes évaluations récentes</h2>
+            <div class="card">
+                <div class="rating-item">
+                    <div class="rating-header">
+                        <div class="rating-stars">
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                        </div>
+                        <span class="rating-date">15/06/2023</span>
+                    </div>
+                    <p class="rating-comment">
+                        "Professeur très pédagogue qui a su redonner confiance à mon fils. Les résultats se sont nettement améliorés en quelques semaines seulement."
+                    </p>
+                </div>
+                <div class="rating-item">
+                    <div class="rating-header">
+                        <div class="rating-stars">
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star" class="filled"></i>
+                            <i data-lucide="star"></i>
+                        </div>
+                        <span class="rating-date">02/06/2023</span>
+                    </div>
+                    <p class="rating-comment">
+                        "Explications claires et méthodiques. Ma fille a enfin compris des concepts qui lui paraissaient obscurs en classe."
+                    </p>
+                </div>
+            </div>
+
+            <!-- Training Section -->
+            <h2 class="section-title">Formations disponibles</h2>
+            <div class="card">
+                <div class="training-item">
+                    <div class="training-info">
+                        <h4>Nouveaux programmes du Bac 2024</h4>
+                        <p>Formation en ligne - 3 heures</p>
+                    </div>
+                    <button class="training-btn">Commencer</button>
+                </div>
+                <div class="training-item">
+                    <div class="training-info">
+                        <h4>Outils numériques pour l'enseignement</h4>
+                        <p>Webinaire - 2 heures</p>
+                    </div>
+                    <button class="training-btn">S'inscrire</button>
+                </div>
+                <div class="training-item">
+                    <div class="training-info">
+                        <h4>Gestion des élèves en difficulté</h4>
+                        <p>Module interactif - 1.5 heures</p>
+                    </div>
+                    <button class="training-btn">Commencer</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('menu-open');
+        });
+
+        // Close menu when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 992) {
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
